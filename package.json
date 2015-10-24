@@ -1,0 +1,32 @@
+{
+  "name": "opk-cli--farmos",
+  "version": "0.0.0",
+  "description": "Command line client for pushing data to farmOS",
+  "main": "push",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "is-json": "^1.2.5",
+    "split": "^1.0.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "push"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openpipekit/opk-cli--farmos.git"
+  },
+  "keywords": [
+    "iot",
+    "adafruit"
+  ],
+  "author": "R.J. Steinert",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/openpipekit/opk-cli--farmos/issues"
+  },
+  "homepage": "https://github.com/openpipekit/opk-cli--farmos#readme"
+}
