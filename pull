@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+
+var split = require('split')
+var isJson = require('is-json')
+var options = parseArgv(process.argv)
+var child_process = require('child_process')
+var url = require('url')
+var _ = require('underscore')
+
+// If help flag is set, print help text and exit.
+if (options.hasOwnProperty('help')) {
+  console.log('./push')
+  console.log('  --public_key <public_key> Example: IFEfji3f3ns')
+  console.log('  --private_key <private_key> Example:Xifesfisffsi')
+  console.log('  --url <url> Example: http://farmos.pantheon.io')
+  console.log('  --verbose Use for debug output')
+  console.log('')
+  console.log('Usage: ./pull --public_key temperature_probe1 --private_key IDFJEFIEFJ --url http://farmos.pantheon.io')
+  console.log('[{"id": "temperature1", "value": 89, timestamp: 18473883747},{"id": "humidity1", "value": 20, timestamp: 18473883747 }]')
+  console.log('')
+  process.exit(0)
+}
+
+options.url = url.parse(options.url)
+var destination = options.url.protocol + '//' + options.url.host + '/farm/sensor/listener/' + options.public_key + '?private_key=' + options.private_key
+var cmd = 'curl -XGET ' + destination 
+log('cmd:')
+log(cmd)
+
+child_process.exec(cmd, function(err, stdout, stderr) {
+	//if (err) console.log(err)
+	//if (stderr) console.log(stderr)
+	console.log(stdout)
+})
+
+// This is the standard function for parsing process.argv. It will return
+// an object that where `--argumentName` is a property name and the
+// proceding argument is the value. If there is no proceeding value then
+// it will be interpreted as a boolean true.
+// @todo Consider argv-ee
+function parseArgv(argv) {
+  params = {}
+  argv.forEach(function(arg, i) {
+    if (arg.substr(0, 2) == '--') {
+      paramName = arg.substr(2, arg.length)
+      nextArg = argv[i+1]
+      if ((typeof nextArg == 'string' && nextArg.substr(0, 2) == '--') || nextArg == undefined) {
+        params[paramName] = true
+      }
+      else {
+        params[paramName] = nextArg
+      }
+    }
+  })
+  return params
+}
+
+// A log function that will only log if the --verbose flag is set
+function log(msg) {
+  if (typeof msg == 'object') msg = JSON.stringify(msg)
+  if (params.hasOwnProperty('verbose')) {
+    console.log(msg)
+    console.log('')
+    console.log('')
+  }
+}
+
